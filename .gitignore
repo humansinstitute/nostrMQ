@@ -1,6 +1,9 @@
 # Dependency directories
 node_modules/
 
+# Build output
+dist/
+
 # Environment variables
 .env
 
@@ -9,6 +12,7 @@ node_modules/
 .roorules
 .clineignore
 .clinerules
+docs/live/*
 
 # Ignore output Folder 
 output/
