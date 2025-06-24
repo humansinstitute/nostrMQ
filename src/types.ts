@@ -136,3 +136,15 @@ export interface PowWorkerData {
   /** Nonce increment stride */
   stride: number;
 }
+
+/**
+ * Received message data structure
+ */
+export interface ReceivedMessage {
+  /** The decrypted message payload */
+  payload: unknown;
+  /** Hex pubkey of the message sender */
+  sender: string;
+  /** The raw Nostr event that contained the message */
+  rawEvent: NostrEvent;
+}
