@@ -4,6 +4,8 @@ A minimal Node.js library for encrypted RPC messaging over the Nostr protocol. N
 
 > "NostrMQ lets you build applications like LEGO blocks - choose the best provider for each piece while keeping full control of your identity and data."
 
+NOTE - very WIP right now, just sharing to see if its useful for anyone else.
+
 ------ 
 
 ## Philosophy
