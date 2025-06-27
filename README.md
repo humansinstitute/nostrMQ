@@ -2,6 +2,45 @@
 
 A minimal Node.js library for encrypted RPC messaging over the Nostr protocol. NostrMQ provides secure, decentralized message passing with proof-of-work spam prevention and relay pool management.
 
+> "NostrMQ lets you build applications like LEGO blocks - choose the best provider for each piece while keeping full control of your identity and data."
+
+------ 
+
+## Philosophy
+
+Most applications force you into all-or-nothing trust relationships. You either trust a provider with everything, or you self-host.
+
+This limits our design space and options we have to deliver complex systems to people who need them. 
+
+NostrMQ uses Nostr like a public message queue to decompose apps into separate components, each run by one or more groups, and links them together through remote RPC. 
+
+Each building block can have the trust model that best fits the use case. e.g. let someone else run the client, LLMs etc but keep the signing logic on an isolated device in your house :)
+
+Why Use It?
+
+Don't worry, you don't have to :) 
+
+The philosophy and ideas behind it are:
+
+**1. User composable apps** - Users can choose and swap out components of apps as required. No more "take it or leave it" software with tightly coupled trust models.
+
+**2. Sharing the load** - Complex systems can be hard to self-host. This lets us share the complexity across both self-hosting and service providers - why not both!
+
+**3. Risk sharing** - Running Freedom Tech often comes with risk for both server runners and users. The idea is to open up the design space for how we design and share these risks and responsibilities. and introduce more opportunity for....
+
+**4. Regulatory arbitrage** - Regulation is heavily jurisdiction dependent and risk differs depending on who runs what. This allows you to only run the aspects that are fine in your jurisdiction, then allow users or other service providers to fill in the gaps.
+
+### Freedom Technology Principles
+
+For dissidents in authoritarian societies or those dealing with corruption:
+
+- **Operational Security:** Keep identity management local while outsourcing heavy computation
+- **Plausible Deniability:** "I just run an encrypted database, i dont process anything",  "I'm only a filesystem" , "I only sign messages in a secure enclave"...
+- **Resilience:** If one component gets compromised, the others keep running and we can hotswap providers
+- **Distributed Risk:** No single person carries the full legal/physical risk of the entire system
+
+----
+
 ## Features
 
 - 🔐 **Encrypted Messaging**: NIP-04 encrypted direct messages
