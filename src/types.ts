@@ -33,6 +33,10 @@ export interface ReceiveOpts {
   relays?: string[];
   /** Auto-reply "OK" back to sender */
   autoAck?: boolean;
+  /** Override default private key */
+  privkey?: string;
+  /** PoW mining: false = none, true = env bits, number = explicit bits */
+  pow?: boolean | number;
 }
 
 /**

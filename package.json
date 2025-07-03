@@ -17,7 +17,14 @@
     "README.md",
     "LICENSE"
   ],
-  "keywords": ["nostr", "mq", "rpc", "nip04", "nip13", "pow"],
+  "keywords": [
+    "nostr",
+    "mq",
+    "rpc",
+    "nip04",
+    "nip13",
+    "pow"
+  ],
   "scripts": {
     "build": "tsc && npm run copy:worker",
     "copy:worker": "cp src/pow.worker.js dist/",
@@ -30,13 +37,14 @@
     "pack:local": "npm pack"
   },
   "dependencies": {
+    "dotenv": "^17.0.1",
     "mongoose": "^8.16.1",
     "nostr-tools": "^2.0.0",
     "ws": "^8.16.0"
   },
   "devDependencies": {
-    "typescript": "^5.4.0",
-    "@types/ws": "^8.5.8"
+    "@types/ws": "^8.5.8",
+    "typescript": "^5.4.0"
   },
   "author": "",
   "license": "ISC",

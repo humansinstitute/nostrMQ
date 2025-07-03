@@ -128,6 +128,16 @@ export function receive(opts: ReceiveOpts): SubscriptionHandle {
   // 1. Load and validate configuration
   const config = loadConfig();
 
+  // Override config with provided privkey if specified
+  if (opts.privkey) {
+    // Validate private key format (64 hex characters)
+    if (!/^[a-fA-F0-9]{64}$/.test(opts.privkey)) {
+      throw new Error("privkey must be a 64-character hex string");
+    }
+    config.privkey = opts.privkey;
+    config.pubkey = getPublicKey(hexToBytes(opts.privkey));
+  }
+
   // Merge configuration with options
   const relays = opts.relays || config.relays;
 
