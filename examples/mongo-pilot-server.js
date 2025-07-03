@@ -10,7 +10,7 @@
  * Usage: node examples/mongo-pilot-server.js
  */
 import { send, receive } from '../dist/index.js';
-import { MongoClient } from 'mongodb';
+import mongoose from 'mongoose';
 
 const PRIVKEY = process.env.NOSTRMQ_PRIVKEY;
 const RELAYS = process.env.NOSTRMQ_RELAYS?.split(',');
@@ -27,8 +27,7 @@ const DB_MAP = {
 };
 
 async function start() {
-  const mongo = new MongoClient('mongodb://localhost:27017');
-  await mongo.connect();
+  await mongoose.connect('mongodb://localhost:27017');
   console.log('Connected to MongoDB');
 
   const subscription = receive({
@@ -41,15 +40,19 @@ async function start() {
       if (!dbNpub || !collection || !action || !replyPubkey) return;
       const dbName = DB_MAP[dbNpub];
       if (!dbName) return;
-      const db = mongo.db(dbName).collection(collection);
+      const conn = mongoose.connection.useDb(dbName);
+      const Model = conn.model(collection, new mongoose.Schema({}, { strict: false }), collection);
+      
       let result;
       try {
         if (action === 'find') {
-          result = await db.find(query || {}).toArray();
+          result = await Model.find(query || {}).lean();
         } else if (action === 'update') {
-          result = await db.updateMany(query || {}, update || {});
+          result = await Model.updateMany(query || {}, update || {});
+        } else if (action === 'insert') {
+          result = await Model.create(query || {});
         } else if (action === 'delete') {
-          result = await db.deleteMany(query || {});
+          result = await Model.deleteMany(query || {});
         } else {
           throw new Error('Invalid action');
         }
@@ -74,7 +77,7 @@ async function start() {
   console.log('Server listening for NostrMQ messages');
   process.on('SIGINT', async () => {
     await subscription.close();
-    await mongo.close();
+    await mongoose.disconnect();
     process.exit();
   });
 }

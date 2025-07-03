@@ -30,6 +30,7 @@
     "pack:local": "npm pack"
   },
   "dependencies": {
+    "mongoose": "^8.16.1",
     "nostr-tools": "^2.0.0",
     "ws": "^8.16.0"
   },
