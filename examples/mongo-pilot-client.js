@@ -12,6 +12,8 @@
  */
 import { send, receive } from '../dist/index.js';
 import { generatePrivateKey, getPublicKey } from 'nostr-tools';
+import readline from 'node:readline/promises';
+import { stdin as input, stdout as output } from 'node:process';
 
 const TARGET = process.env.TARGET_PUBKEY;
 const RELAYS = process.env.NOSTRMQ_RELAYS?.split(',');
@@ -20,12 +22,17 @@ if (!TARGET || !RELAYS?.length) {
   process.exit(1);
 }
 
-// create ephemeral keys for reply
-const replyPriv = generatePrivateKey();
-const replyPub = getPublicKey(replyPriv);
 
 async function run() {
-  // listen for the reply
+  const rl = readline.createInterface({ input, output });
+
+  const choice = await rl.question('Choose action:\n  a) insert sample\n  b) read sample\n  c) delete sample\n> ');
+  rl.close();
+
+  // create ephemeral keys for reply
+  const replyPriv = generatePrivateKey();
+  const replyPub = getPublicKey(replyPriv);
+
   const sub = receive({
     onMessage: (payload) => {
       console.log('Response:', payload);
@@ -37,19 +44,30 @@ async function run() {
     pow: false,
   });
 
-  // send request
-  await send({
-    target: TARGET,
-    payload: {
-      dbNpub: 'exampledbnpub',
-      collection: 'users',
-      action: 'find',
-      query: { id: 1 },
-      replyPubkey: replyPub,
-    },
-    relays: RELAYS,
-    pow: false,
-  });
+  const payload = {
+    dbNpub: 'exampledbnpub',
+    collection: 'users',
+    replyPubkey: replyPub,
+    action: 'find',
+    query: { id: 1 },
+  };
+
+  if (choice.trim().toLowerCase().startsWith('a')) {
+    payload.action = 'insert';
+    payload.query = { id: 1, name: 'Alice' };
+  } else if (choice.trim().toLowerCase().startsWith('b')) {
+    payload.action = 'find';
+    payload.query = { id: 1 };
+  } else if (choice.trim().toLowerCase().startsWith('c')) {
+    payload.action = 'delete';
+    payload.query = { id: 1 };
+  } else {
+    console.log('Unknown choice');
+    await sub.close();
+    process.exit(1);
+  }
+
+  await send({ target: TARGET, payload, relays: RELAYS, pow: false });
 
   console.log('Request sent. Waiting for reply...');
 }

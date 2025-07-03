@@ -6,7 +6,7 @@ This document outlines a simple pilot application using **NostrMQ** for remote M
 
 1. **Local MongoDB** – The server runs a MongoDB instance accessible via `mongodb://localhost:27017`.
 2. **Database Selection** – Each database is associated with an `npub` tag. Clients specify the database by including this npub in the payload.
-3. **Actions** – The payload supports `find`, `update`, and `delete` operations. Documents are selected with a MongoDB query object.
+3. **Actions** – The payload supports `insert`, `find`, `update`, and `delete` operations. Documents are selected with a query object when applicable.
 4. **Whitelisting** – Only messages from pubkeys present in `ALLOWED_SENDERS` are processed.
 5. **Ephemeral Replies** – Clients include an ephemeral `replyPubkey` in the request. The server encrypts the response to this pubkey and sends it via NostrMQ.
 6. **Status Codes** – Responses include a `status` field (`ok` or `error`) and optional result data.
@@ -17,7 +17,7 @@ This document outlines a simple pilot application using **NostrMQ** for remote M
 {
   "dbNpub": "<npub identifying the database>",
   "collection": "users",
-  "action": "find" | "update" | "delete",
+  "action": "insert" | "find" | "update" | "delete",
   "query": { "id": 1 },
   "update": { "$set": { "name": "Bob" } },
   "replyPubkey": "<ephemeral npub>"
@@ -46,6 +46,7 @@ This document outlines a simple pilot application using **NostrMQ** for remote M
 ## Implementation Notes
 
 - Environment variables hold the server private key (`NOSTRMQ_PRIVKEY`), relay list (`NOSTRMQ_RELAYS`), and allowed sender pubkeys (`ALLOWED_SENDERS`).
+- The server uses **Mongoose** to interact with a local MongoDB instance (`mongodb://localhost:27017`).
 - The mapping from `dbNpub` to actual MongoDB database names can live in a simple JavaScript object.
 - To keep the example self‑contained, PoW is disabled during testing.
 
