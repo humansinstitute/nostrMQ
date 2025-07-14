@@ -4,23 +4,21 @@ A minimal Node.js library for encrypted RPC messaging over the Nostr protocol. N
 
 > "NostrMQ lets you build applications like LEGO blocks - choose the best provider for each piece while keeping full control of your identity and data."
 
-NOTE - very WIP right now, just sharing to see if its useful for anyone else.
-
------- 
+---
 
 ## Philosophy
 
 Most applications force you into all-or-nothing trust relationships. You either trust a provider with everything, or you self-host.
 
-This limits our design space and options we have to deliver complex systems to people who need them. 
+This limits our design space and options we have to deliver complex systems to people who need them.
 
-NostrMQ uses Nostr like a public message queue to decompose apps into separate components, each run by one or more groups, and links them together through remote RPC. 
+NostrMQ uses Nostr like a public message queue to decompose apps into separate components, each run by one or more groups, and links them together through remote RPC.
 
 Each building block can have the trust model that best fits the use case. e.g. let someone else run the client, LLMs etc but keep the signing logic on an isolated device in your house :)
 
 Why Use It?
 
-Don't worry, you don't have to :) 
+Don't worry, you don't have to :)
 
 The philosophy and ideas behind it are:
 
@@ -37,11 +35,11 @@ The philosophy and ideas behind it are:
 For dissidents in authoritarian societies or those dealing with corruption:
 
 - **Operational Security:** Keep identity management local while outsourcing heavy computation
-- **Plausible Deniability:** "I just run an encrypted database, i dont process anything",  "I'm only a filesystem" , "I only sign messages in a secure enclave"...
+- **Plausible Deniability:** "I just run an encrypted database, i dont process anything", "I'm only a filesystem" , "I only sign messages in a secure enclave"...
 - **Resilience:** If one component gets compromised, the others keep running and we can hotswap providers
 - **Distributed Risk:** No single person carries the full legal/physical risk of the entire system
 
-----
+---
 
 ## Features
 
@@ -67,14 +65,14 @@ Create a `.env` file with your configuration:
 
 ```bash
 # Required: Your Nostr private key (64 hex characters)
-NOSTR_PRIVKEY=your_private_key_here
+NOSTRMQ_PRIVKEY=your_private_key_here
 
 # Optional: Relay URLs (comma-separated)
-NOSTR_RELAYS=wss://relay.damus.io,wss://relay.snort.social
+NOSTRMQ_RELAYS=wss://relay.damus.io,wss://relay.snort.social
 
 # Optional: Proof-of-Work settings
-NOSTR_POW_DIFFICULTY=0
-NOSTR_POW_THREADS=4
+NOSTRMQ_POW_DIFFICULTY=0
+NOSTRMQ_POW_THREADS=4
 ```
 
 ### 2. Basic Usage
@@ -290,12 +288,12 @@ try {
 
 ## Environment Variables
 
-| Variable               | Required | Default                                         | Description                           |
-| ---------------------- | -------- | ----------------------------------------------- | ------------------------------------- |
-| `NOSTR_PRIVKEY`        | Yes      | -                                               | Your Nostr private key (64 hex chars) |
-| `NOSTR_RELAYS`         | No       | `wss://relay.damus.io,wss://relay.snort.social` | Comma-separated relay URLs            |
-| `NOSTR_POW_DIFFICULTY` | No       | `0`                                             | Default PoW difficulty in bits        |
-| `NOSTR_POW_THREADS`    | No       | `4`                                             | Worker threads for PoW mining         |
+| Variable                 | Required | Default                                         | Description                           |
+| ------------------------ | -------- | ----------------------------------------------- | ------------------------------------- |
+| `NOSTRMQ_PRIVKEY`        | Yes      | -                                               | Your Nostr private key (64 hex chars) |
+| `NOSTRMQ_RELAYS`         | No       | `wss://relay.damus.io,wss://relay.snort.social` | Comma-separated relay URLs            |
+| `NOSTRMQ_POW_DIFFICULTY` | No       | `0`                                             | Default PoW difficulty in bits        |
+| `NOSTRMQ_POW_THREADS`    | No       | `4`                                             | Worker threads for PoW mining         |
 
 ## Examples
 
@@ -309,7 +307,7 @@ See the [`examples/`](./examples/) directory for complete working examples:
 
 ### Common Issues
 
-**"NOSTR_PRIVKEY environment variable is required"**
+**"NOSTRMQ_PRIVKEY environment variable is required"**
 
 - Ensure your `.env` file contains a valid 64-character hex private key
 - Check that your application is loading environment variables correctly
@@ -372,7 +370,7 @@ const eventId: string = await send(sendOptions);
 
 ## License
 
-ISC License - see LICENSE file for details.
+MIT License - see LICENSE file for details.
 
 ## Related Projects
 
