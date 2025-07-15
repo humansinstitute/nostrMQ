@@ -67,6 +67,8 @@ export interface NostrMQConfig {
   powDifficulty: number;
   /** Number of worker threads for PoW mining */
   powThreads: number;
+  /** Optional tracking configuration */
+  tracking?: TrackingConfig;
 }
 
 /**
@@ -151,4 +153,40 @@ export interface ReceivedMessage {
   sender: string;
   /** The raw Nostr event that contained the message */
   rawEvent: NostrEvent;
+}
+
+/**
+ * Configuration for message tracking to prevent replay attacks
+ */
+export interface TrackingConfig {
+  /** How far back to look for messages in seconds (default: 3600) */
+  oldestMqSeconds: number;
+  /** Maximum number of recent event IDs to track in memory (default: 100) */
+  trackLimit: number;
+  /** Directory for persistent cache storage (default: ".nostrmq") */
+  cacheDir: string;
+  /** Whether to enable persistent caching to disk (default: true) */
+  enablePersistence: boolean;
+}
+
+/**
+ * Structure for timestamp cache file
+ */
+export interface TimestampCache {
+  /** Last processed timestamp in seconds since epoch */
+  lastProcessed: number;
+  /** When this cache was last updated */
+  updatedAt: number;
+}
+
+/**
+ * Structure for event ID snapshot cache file
+ */
+export interface SnapshotCache {
+  /** Array of recently processed event IDs */
+  eventIds: string[];
+  /** When this snapshot was created */
+  createdAt: number;
+  /** Number of events in this snapshot */
+  count: number;
 }

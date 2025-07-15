@@ -1,0 +1,77 @@
+{
+  "timestamp": "2025-07-15T03:40:34.708Z",
+  "config": {
+    "timeout": 30000,
+    "verbose": false,
+    "performance": false,
+    "cleanup": true,
+    "bail": false
+  },
+  "summary": {
+    "totalTests": 3,
+    "totalPassed": 0,
+    "totalFailed": 3,
+    "totalSkipped": 0,
+    "successRate": 0,
+    "totalDuration": 54
+  },
+  "results": [
+    {
+      "testFile": {
+        "name": "MessageTracker Unit Tests",
+        "file": "messageTracker.test.js",
+        "description": "Tests for MessageTracker class functionality"
+      },
+      "success": false,
+      "error": "describe is not defined",
+      "stack": "ReferenceError: describe is not defined\n    at file:///Users/pw/code/nostrMQ/test/messageTracker.test.js:64:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:263:25)\n    at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)\n    at async runTestFile (file:///Users/pw/code/nostrMQ/test/run-tests.js:157:24)\n    at async main (file:///Users/pw/code/nostrMQ/test/run-tests.js:385:20)",
+      "duration": 31,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "timestamp": 1752550834685
+    },
+    {
+      "testFile": {
+        "name": "Utils Tracking Tests",
+        "file": "utils-tracking.test.js",
+        "description": "Tests for tracking utility functions"
+      },
+      "success": false,
+      "error": "describe is not defined",
+      "stack": "ReferenceError: describe is not defined\n    at file:///Users/pw/code/nostrMQ/test/utils-tracking.test.js:59:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:263:25)\n    at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)\n    at async runTestFile (file:///Users/pw/code/nostrMQ/test/run-tests.js:157:24)\n    at async main (file:///Users/pw/code/nostrMQ/test/run-tests.js:385:20)",
+      "duration": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "timestamp": 1752550834687
+    },
+    {
+      "testFile": {
+        "name": "Receive Integration Tests",
+        "file": "receive-tracking.test.js",
+        "description": "Integration tests for receive.ts with tracking"
+      },
+      "success": false,
+      "error": "describe is not defined",
+      "stack": "ReferenceError: describe is not defined\n    at file:///Users/pw/code/nostrMQ/test/receive-tracking.test.js:128:1",
+      "duration": 19,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "timestamp": 1752550834707
+    }
+  ],
+  "environment": {
+    "nodeVersion": "v20.19.2",
+    "platform": "darwin",
+    "arch": "arm64",
+    "memory": {
+      "rss": 57327616,
+      "heapTotal": 10534912,
+      "heapUsed": 7926472,
+      "external": 3718780,
+      "arrayBuffers": 1480745
+    }
+  }
+}

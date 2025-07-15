@@ -7,6 +7,7 @@ import type {
   EncryptedPayload,
 } from "./types.js";
 import { RelayPool, createRelayPool } from "./relayPool.js";
+import { createMessageTracker, MessageTracker } from "./messageTracker.js";
 import {
   loadConfig,
   generateUniqueId,
@@ -155,13 +156,34 @@ export function receive(opts: ReceiveOpts): SubscriptionHandle {
   const subscriptionId = generateUniqueId();
   const handle = new SubscriptionHandleImpl(subscriptionId, relayPool);
 
-  // 3. Set up event handlers for processing messages
+  // 3. Initialize MessageTracker for replay protection
+  let messageTracker: MessageTracker | null = null;
+
+  // 4. Set up event handlers for processing messages
   relayPool.on(
     "event",
     async (url: string, subId: string, event: NostrEvent) => {
       if (subId !== subscriptionId) return;
 
       try {
+        // Check for duplicate events using MessageTracker
+        if (messageTracker) {
+          try {
+            if (
+              (messageTracker as MessageTracker).hasProcessed(
+                event.id,
+                event.created_at
+              )
+            ) {
+              console.debug(`Skipping duplicate event: ${event.id}`);
+              return;
+            }
+          } catch (error) {
+            console.debug("MessageTracker duplicate check failed:", error);
+            // Continue processing even if tracking fails
+          }
+        }
+
         // Process the received event
         const messageData = await processEvent(event, config);
         if (messageData) {
@@ -174,6 +196,19 @@ export function receive(opts: ReceiveOpts): SubscriptionHandle {
             );
           } catch (error) {
             console.error("Error in onMessage callback:", error);
+          }
+
+          // Mark event as processed in MessageTracker
+          if (messageTracker) {
+            try {
+              await (messageTracker as MessageTracker).markProcessed(
+                event.id,
+                event.created_at
+              );
+            } catch (error) {
+              console.debug("MessageTracker markProcessed failed:", error);
+              // Continue even if tracking fails
+            }
           }
 
           // Add to async iterator queue
@@ -209,12 +244,41 @@ export function receive(opts: ReceiveOpts): SubscriptionHandle {
   // 4. Connect to relays and subscribe
   relayPool
     .connect()
-    .then(() => {
+    .then(async () => {
+      // Initialize MessageTracker after successful connection
+      try {
+        messageTracker = createMessageTracker();
+        await messageTracker.initialize();
+        console.log("MessageTracker initialized successfully");
+      } catch (error) {
+        console.warn(
+          "Failed to initialize MessageTracker, continuing without tracking:",
+          error
+        );
+        messageTracker = null;
+      }
+
       // Subscribe to kind 30072 events targeting the user's pubkey
-      const filter = {
+      const filter: any = {
         kinds: [30072],
         "#p": [config.pubkey],
       };
+
+      // Add 'since' parameter if MessageTracker is available
+      if (messageTracker) {
+        try {
+          filter.since = (
+            messageTracker as MessageTracker
+          ).getSubscriptionSince();
+          console.log(
+            `Using MessageTracker since timestamp: ${new Date(
+              filter.since * 1000
+            ).toISOString()}`
+          );
+        } catch (error) {
+          console.debug("Failed to get subscription since timestamp:", error);
+        }
+      }
 
       relayPool.subscribe(subscriptionId, [filter], relays);
       console.log(`Subscribed to messages for pubkey: ${config.pubkey}`);

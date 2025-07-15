@@ -1,5 +1,12 @@
 import { getPublicKey } from "nostr-tools";
-import type { NostrMQConfig } from "./types.js";
+import { promises as fs } from "fs";
+import { join } from "path";
+import type {
+  NostrMQConfig,
+  TrackingConfig,
+  TimestampCache,
+  SnapshotCache,
+} from "./types.js";
 
 /**
  * Convert hex string to Uint8Array
@@ -153,4 +160,117 @@ export function safeJsonStringify(obj: unknown): string {
   } catch {
     throw new Error("Unable to serialize object to JSON");
   }
+}
+
+/**
+ * Ensure cache directory exists, creating it if necessary
+ * Gracefully handles errors and returns success status
+ */
+export async function ensureCacheDir(dir: string): Promise<boolean> {
+  try {
+    await fs.mkdir(dir, { recursive: true });
+    return true;
+  } catch (error) {
+    console.warn(`Failed to create cache directory ${dir}:`, error);
+    return false;
+  }
+}
+
+/**
+ * Save timestamp to cache file
+ * Gracefully handles errors and returns success status
+ */
+export async function saveTimestamp(dir: string, timestamp: number): Promise<boolean> {
+  try {
+    const timestampFile = join(dir, "timestamp.json");
+    const cache: TimestampCache = {
+      lastProcessed: timestamp,
+      updatedAt: Math.floor(Date.now() / 1000),
+    };
+    await fs.writeFile(timestampFile, JSON.stringify(cache, null, 2));
+    return true;
+  } catch (error) {
+    console.warn(`Failed to save timestamp to ${dir}:`, error);
+    return false;
+  }
+}
+
+/**
+ * Load timestamp from cache file with fallback
+ * Returns the timestamp or null if unable to load
+ */
+export async function loadTimestamp(dir: string): Promise<number | null> {
+  try {
+    const timestampFile = join(dir, "timestamp.json");
+    const content = await fs.readFile(timestampFile, "utf-8");
+    const cache: TimestampCache = JSON.parse(content);
+    
+    // Validate cache structure
+    if (typeof cache.lastProcessed === "number" && cache.lastProcessed > 0) {
+      return cache.lastProcessed;
+    }
+    return null;
+  } catch (error) {
+    // File doesn't exist or is invalid - this is expected on first run
+    return null;
+  }
+}
+
+/**
+ * Save event IDs snapshot to cache file
+ * Gracefully handles errors and returns success status
+ */
+export async function saveSnapshot(dir: string, eventIds: string[]): Promise<boolean> {
+  try {
+    const snapshotFile = join(dir, "snapshot.json");
+    const cache: SnapshotCache = {
+      eventIds: [...eventIds],
+      createdAt: Math.floor(Date.now() / 1000),
+      count: eventIds.length,
+    };
+    await fs.writeFile(snapshotFile, JSON.stringify(cache, null, 2));
+    return true;
+  } catch (error) {
+    console.warn(`Failed to save snapshot to ${dir}:`, error);
+    return false;
+  }
+}
+
+/**
+ * Load event IDs snapshot from cache file
+ * Returns the event IDs array or empty array if unable to load
+ */
+export async function loadSnapshot(dir: string): Promise<string[]> {
+  try {
+    const snapshotFile = join(dir, "snapshot.json");
+    const content = await fs.readFile(snapshotFile, "utf-8");
+    const cache: SnapshotCache = JSON.parse(content);
+    
+    // Validate cache structure
+    if (Array.isArray(cache.eventIds)) {
+      return cache.eventIds;
+    }
+    return [];
+  } catch (error) {
+    // File doesn't exist or is invalid - this is expected on first run
+    return [];
+  }
+}
+
+/**
+ * Load tracking configuration from environment variables
+ * Returns configuration with sensible defaults
+ */
+export function getTrackingConfig(): TrackingConfig {
+  const oldestMqSeconds = parseInt(process.env.NOSTRMQ_OLDEST_MQ || "3600", 10);
+  const trackLimit = parseInt(process.env.NOSTRMQ_TRACK_LIMIT || "100", 10);
+  const cacheDir = process.env.NOSTRMQ_CACHE_DIR || ".nostrmq";
+  const enablePersistence = process.env.NOSTRMQ_DISABLE_PERSISTENCE !== "true";
+
+  return {
+    oldestMqSeconds: Math.max(60, oldestMqSeconds), // Minimum 1 minute
+    trackLimit: Math.max(10, Math.min(1000, trackLimit)), // Between 10-1000
+    cacheDir,
+    enablePersistence,
+  };
 }
