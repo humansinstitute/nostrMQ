@@ -280,6 +280,12 @@ export { isValidPubkey } from "./utils.js";
  */
 export { isValidRelayUrl } from "./utils.js";
 
+/**
+ * MessageTracker class for preventing replay attacks
+ * @since 1.1.0
+ */
+export { MessageTracker, createMessageTracker } from "./messageTracker.js";
+
 // Export TypeScript types for library consumers
 export type {
   /**
@@ -347,4 +353,10 @@ export type {
    * @since 1.0.0
    */
   PowWorkerData,
+
+  /**
+   * Configuration for message tracking to prevent replay attacks
+   * @since 1.1.0
+   */
+  TrackingConfig,
 } from "./types.js";
