@@ -10,8 +10,8 @@ Before running any examples, make sure you have:
 
    ```bash
    export NOSTRMQ_PRIVKEY="your_private_key_in_hex"
-   export NOSTRMQ_RELAYS="wss://relay1.com,wss://relay2.com"
-   export NOSTRMQ_POW_DIFFICULTY="8"  # Optional, default PoW difficulty
+   export NOSTR_RELAYS="wss://relay1.com,wss://relay2.com"
+   export NOSTR_POW_DIFFICULTY="8"  # Optional, default PoW difficulty
    export NOSTRMQ_POW_THREADS="4"     # Optional, worker threads for PoW
    ```
 
@@ -85,7 +85,7 @@ Create a `.env` file in the project root:
 ```bash
 # Required
 NOSTRMQ_PRIVKEY=your_64_character_hex_private_key
-NOSTRMQ_RELAYS=wss://relay.damus.io,wss://nos.lol,wss://relay.nostr.band
+NOSTR_RELAYS=wss://relay.damus.io,wss://nos.lol,wss://relay.nostr.band
 
 # Optional
 NOSTRMQ_POW_DIFFICULTY=8
@@ -115,7 +115,7 @@ To test message exchange:
    ```bash
    # Set your private key
    export NOSTRMQ_PRIVKEY="your_privkey_hex"
-   export NOSTRMQ_RELAYS="wss://relay.damus.io,wss://nos.lol"
+   export NOSTR_RELAYS="wss://relay.damus.io,wss://nos.lol"
 
    # Run receiver
    node examples/basic-usage.js
@@ -126,7 +126,7 @@ To test message exchange:
    ```bash
    # Set a different private key
    export NOSTRMQ_PRIVKEY="different_privkey_hex"
-   export NOSTRMQ_RELAYS="wss://relay.damus.io,wss://nos.lol"
+   export NOSTR_RELAYS="wss://relay.damus.io,wss://nos.lol"
 
    # Modify the target pubkey in the example to match Terminal 1's pubkey
    # Then run sender
@@ -137,7 +137,7 @@ To test message exchange:
 
 ### 1. "Failed to load configuration"
 
-- Ensure `NOSTRMQ_PRIVKEY` and `NOSTRMQ_RELAYS` are set
+- Ensure `NOSTRMQ_PRIVKEY` and `NOSTR_RELAYS` are set
 - Private key must be 64 hex characters
 - Relay URLs must start with `wss://`
 

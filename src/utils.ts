@@ -34,14 +34,19 @@ export function loadConfig(): NostrMQConfig {
   }
 
   const pubkey = getPublicKey(hexToBytes(privkey));
-
-  const relaysEnv =
-    process.env.NOSTR_RELAYS || "wss://relay.damus.io,wss://relay.snort.social";
+ 
+  const relaysEnv = process.env.NOSTR_RELAYS;
+  if (!relaysEnv) {
+    throw new Error("NOSTR_RELAYS environment variable is required");
+  }
   const relays = relaysEnv
     .split(",")
     .map((url) => url.trim())
     .filter(Boolean);
-
+  if (relays.length === 0) {
+    throw new Error("NOSTR_RELAYS must contain at least one relay URL");
+  }
+ 
   const powDifficulty = parseInt(process.env.NOSTR_POW_DIFFICULTY || "0", 10);
   const powThreads = parseInt(process.env.NOSTR_POW_THREADS || "4", 10);
 

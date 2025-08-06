@@ -6,7 +6,7 @@
  *
  * Expected environment variables:
  *   TARGET_PUBKEY      - server pubkey in hex
- *   NOSTRMQ_RELAYS     - comma separated relay URLs
+ *   NOSTR_RELAYS       - comma separated relay URLs (required; no fallback)
  *
  * Usage: node examples/mongo-pilot-client.js
  */
@@ -20,10 +20,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const TARGET = process.env.TARGET_PUBKEY;
-const RELAYS = process.env.NOSTRMQ_RELAYS?.split(",");
+const RELAYS = process.env.NOSTR_RELAYS?.split(",");
 const CLIENT_PRIVKEY = process.env.NOSTRMQ_PRIVKEY; // Use the whitelisted key for sending
 if (!TARGET || !RELAYS?.length || !CLIENT_PRIVKEY) {
-  console.error("Missing TARGET_PUBKEY, NOSTRMQ_RELAYS, or NOSTRMQ_PRIVKEY");
+  console.error("Missing TARGET_PUBKEY, NOSTR_RELAYS, or NOSTRMQ_PRIVKEY");
   console.error(
     "Make sure to run with: node --env-file=.env examples/mongo-pilot-client.js"
   );

@@ -127,12 +127,14 @@ Create a `.env` file with your configuration:
 # Required: Your Nostr private key (64 hex characters)
 NOSTRMQ_PRIVKEY=your_private_key_here
 
-# Optional: Relay URLs (comma-separated)
-NOSTRMQ_RELAYS=wss://relay.damus.io,wss://relay.snort.social
+# Required: Relay URLs (comma-separated). No fallback; must be set.
+# Example:
+# NOSTR_RELAYS=wss://relay.damus.io,wss://nos.lol,wss://relay.nostr.band
+NOSTR_RELAYS=
 
 # Optional: Proof-of-Work settings
-NOSTRMQ_POW_DIFFICULTY=0
-NOSTRMQ_POW_THREADS=4
+NOSTR_POW_DIFFICULTY=0
+NOSTR_POW_THREADS=4
 ```
 
 ### 2. Basic Usage
@@ -348,12 +350,12 @@ try {
 
 ## Environment Variables
 
-| Variable                 | Required | Default                                         | Description                           |
-| ------------------------ | -------- | ----------------------------------------------- | ------------------------------------- |
-| `NOSTRMQ_PRIVKEY`        | Yes      | -                                               | Your Nostr private key (64 hex chars) |
-| `NOSTRMQ_RELAYS`         | No       | `wss://relay.damus.io,wss://relay.snort.social` | Comma-separated relay URLs            |
-| `NOSTRMQ_POW_DIFFICULTY` | No       | `0`                                             | Default PoW difficulty in bits        |
-| `NOSTRMQ_POW_THREADS`    | No       | `4`                                             | Worker threads for PoW mining         |
+| Variable              | Required | Default | Description                                        |
+| --------------------- | -------- | ------- | -------------------------------------------------- |
+| `NOSTRMQ_PRIVKEY`     | Yes      | -       | Your Nostr private key (64 hex chars)              |
+| `NOSTR_RELAYS`        | Yes      | -       | Comma-separated relay URLs (no fallback; required) |
+| `NOSTR_POW_DIFFICULTY`| No       | `0`     | Default PoW difficulty in bits                     |
+| `NOSTR_POW_THREADS`   | No       | `4`     | Worker threads for PoW mining                      |
 
 ## Examples
 

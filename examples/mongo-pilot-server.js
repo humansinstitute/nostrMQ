@@ -4,7 +4,7 @@
  * Run a local MongoDB instance and listen for requests over Nostr.
  * The server expects environment variables:
  *   NOSTRMQ_PRIVKEY  - hex private key used to decrypt and send messages
- *   NOSTRMQ_RELAYS   - comma separated relay URLs
+ *   NOSTR_RELAYS     - comma separated relay URLs (required; no fallback)
  *   ALLOWED_SENDERS  - comma separated pubkeys allowed to send requests
  *
  * Usage: node examples/mongo-pilot-server.js
@@ -19,11 +19,11 @@ dotenv.config();
 import { getPublicKey } from "nostr-tools";
 
 const PRIVKEY = process.env.NOSTRMQ_PRIVKEY;
-const RELAYS = process.env.NOSTRMQ_RELAYS?.split(",");
+const RELAYS = process.env.NOSTR_RELAYS?.split(",");
 const ALLOWED = process.env.ALLOWED_SENDERS?.split(",") || [];
 
 if (!PRIVKEY || !RELAYS?.length) {
-  console.error("Missing NOSTRMQ_PRIVKEY or NOSTRMQ_RELAYS");
+  console.error("Missing NOSTRMQ_PRIVKEY or NOSTR_RELAYS");
   process.exit(1);
 }
 

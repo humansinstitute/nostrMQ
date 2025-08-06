@@ -23,4 +23,5 @@ console.log("");
 console.log(`NOSTRMQ_PRIVKEY=${serverPrivKeyHex}`);
 console.log(`TARGET_PUBKEY=${serverPubKeyHex}`);
 console.log(`ALLOWED_SENDERS=${serverPubKeyHex}`);
-console.log("NOSTRMQ_RELAYS=wss://relay.damus.io,wss://relay.snort.social");
+console.log("# You must set NOSTR_RELAYS (comma-separated). Example:");
+console.log("NOSTR_RELAYS=wss://relay.damus.io,wss://nos.lol,wss://relay.nostr.band");

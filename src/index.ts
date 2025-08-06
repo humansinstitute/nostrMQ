@@ -40,9 +40,9 @@
  * @example Environment Configuration
  * Set these environment variables:
  * - `NOSTRMQ_PRIVKEY`: Your private key (hex)
- * - `NOSTRMQ_RELAYS`: Comma-separated relay URLs
- * - `NOSTRMQ_POW_DIFFICULTY`: Default PoW bits (optional)
- * - `NOSTRMQ_POW_THREADS`: Worker threads for PoW (optional)
+ * - `NOSTR_RELAYS`: Comma-separated relay URLs (required; no fallback)
+ * - `NOSTR_POW_DIFFICULTY`: Default PoW bits (optional)
+ * - `NOSTR_POW_THREADS`: Worker threads for PoW (optional)
  *
  * @since 1.0.0
  */
@@ -220,7 +220,7 @@ export { hasValidPow } from "./pow.js";
  * @returns Configuration object with all required settings
  *
  * @throws {Error} When NOSTRMQ_PRIVKEY is missing or invalid
- * @throws {Error} When NOSTRMQ_RELAYS is missing or contains invalid URLs
+ * @throws {Error} When NOSTR_RELAYS is missing or contains invalid URLs
  *
  * @example
  * ```typescript
@@ -235,9 +235,9 @@ export { hasValidPow } from "./pow.js";
  *
  * Environment variables:
  * - `NOSTRMQ_PRIVKEY` (required): Your private key in hex format
- * - `NOSTRMQ_RELAYS` (required): Comma-separated list of relay WebSocket URLs
- * - `NOSTRMQ_POW_DIFFICULTY` (optional): Default PoW difficulty in bits (default: 0)
- * - `NOSTRMQ_POW_THREADS` (optional): Number of worker threads for PoW (default: 1)
+ * - `NOSTR_RELAYS` (required): Comma-separated list of relay WebSocket URLs
+ * - `NOSTR_POW_DIFFICULTY` (optional): Default PoW difficulty in bits (default: 0)
+ * - `NOSTR_POW_THREADS` (optional): Number of worker threads for PoW (default: 1)
  *
  * @since 1.0.0
  */

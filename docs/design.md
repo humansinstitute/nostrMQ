@@ -72,8 +72,11 @@ nostrMQ/
 # Mandatory
 NOSTR_PRIVKEY=xxxxxxxx...xxxxxxxx
 
-# Optional
-NOSTR_RELAYS=wss://relay.damus.io,wss://relay.snort.social
+# Required
+# Comma-separated list of relay URLs (no fallback; must be set)
+# Example:
+# NOSTR_RELAYS=wss://relay.damus.io,wss://nos.lol,wss://relay.nostr.band
+NOSTR_RELAYS=
 NOSTR_POW_DIFFICULTY=22       # integer bits; 0 or unset → disable PoW
 NOSTR_POW_THREADS=4           # worker threads for mining
 ```

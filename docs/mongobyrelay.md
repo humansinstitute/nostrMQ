@@ -45,7 +45,7 @@ This document outlines a simple pilot application using **NostrMQ** for remote M
 
 ## Implementation Notes
 
-- Environment variables hold the server private key (`NOSTRMQ_PRIVKEY`), relay list (`NOSTRMQ_RELAYS`), and allowed sender pubkeys (`ALLOWED_SENDERS`).
+- Environment variables hold the server private key (`NOSTRMQ_PRIVKEY`), relay list (`NOSTR_RELAYS`), and allowed sender pubkeys (`ALLOWED_SENDERS`). The relay list is required; there is no default fallback.
 - The server uses **Mongoose** to interact with a local MongoDB instance (`mongodb://localhost:27017`).
 - The mapping from `dbNpub` to actual MongoDB database names can live in a simple JavaScript object.
 - To keep the example self‑contained, PoW is disabled during testing.

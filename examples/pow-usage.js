@@ -7,8 +7,8 @@
  * Prerequisites:
  * 1. Set environment variables:
  *    - NOSTRMQ_PRIVKEY=your_private_key_hex
- *    - NOSTRMQ_RELAYS=wss://relay1.com,wss://relay2.com
- *    - NOSTRMQ_POW_DIFFICULTY=8 (optional, default PoW difficulty)
+ *    - NOSTR_RELAYS=wss://relay1.com,wss://relay2.com
+ *    - NOSTR_POW_DIFFICULTY=8 (optional, default PoW difficulty)
  *    - NOSTRMQ_POW_THREADS=4 (optional, worker threads for mining)
  * 2. Run: node examples/pow-usage.js
  */

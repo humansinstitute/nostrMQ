@@ -7,7 +7,7 @@
  * Prerequisites:
  * 1. Set environment variables:
  *    - NOSTRMQ_PRIVKEY=your_private_key_hex
- *    - NOSTRMQ_RELAYS=wss://relay1.com,wss://relay2.com
+ *    - NOSTR_RELAYS=wss://relay1.com,wss://relay2.com
  * 2. Ensure sender npub is whitelisted on the pipeliner service
  * 3. Run: node examples/sendToPipe.js
  */

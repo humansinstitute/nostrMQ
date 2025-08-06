@@ -11,7 +11,7 @@
  * Prerequisites:
  * 1. Set environment variables:
  *    - NOSTRMQ_PRIVKEY=your_private_key_hex
- *    - NOSTRMQ_RELAYS=wss://relay1.com,wss://relay2.com
+ *    - NOSTR_RELAYS=wss://relay1.com,wss://relay2.com
  * 2. Run: node examples/advanced-usage.js
  */
 
